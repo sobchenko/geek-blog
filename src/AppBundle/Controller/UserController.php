@@ -18,16 +18,16 @@ class UserController extends Controller
     /**
      * Lists all user entities.
      *
-     * @Route("/", name="post-user_index")
+     * @Route("/", name="user_index")
      * @Method("GET")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $users = $em->getRepository('AppBundle:User')->findAll();
+        $users = $em->getRepository(User::class)->findAll();
 
-        return $this->render('user/index.html.twig', array(
+        return $this->render('@App/user/index.html.twig', array(
             'users' => $users,
         ));
     }
@@ -35,7 +35,7 @@ class UserController extends Controller
     /**
      * Creates a new user entity.
      *
-     * @Route("/new", name="post-user_new")
+     * @Route("/new", name="user_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -49,10 +49,10 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush($user);
 
-            return $this->redirectToRoute('post-user_show', array('id' => $user->getId()));
+            return $this->redirectToRoute('user_show', array('id' => $user->getId()));
         }
 
-        return $this->render('user/new.html.twig', array(
+        return $this->render('@App/user/new.html.twig', array(
 //            'user' => $user,
             'form' => $form->createView(),
         ));
@@ -61,14 +61,14 @@ class UserController extends Controller
     /**
      * Finds and displays a user entity.
      *
-     * @Route("/{id}", name="post-user_show")
+     * @Route("/{id}", name="user_show")
      * @Method("GET")
      */
     public function showAction(User $user)
     {
         $deleteForm = $this->createDeleteForm($user);
 
-        return $this->render('user/show.html.twig', array(
+        return $this->render('@App/user/show.html.twig', array(
             'user' => $user,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -77,7 +77,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing user entity.
      *
-     * @Route("/{id}/edit", name="post-user_edit")
+     * @Route("/{id}/edit", name="user_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, User $user)
@@ -86,13 +86,13 @@ class UserController extends Controller
         $editForm = $this->createForm('AppBundle\Form\UserType', $user);
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ($editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('post-user_edit', array('id' => $user->getId()));
+            return $this->redirectToRoute('user_edit', array('id' => $user->getId()));
         }
 
-        return $this->render('user/edit.html.twig', array(
+        return $this->render('@App/user/edit.html.twig', array(
             'user' => $user,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -102,7 +102,7 @@ class UserController extends Controller
     /**
      * Deletes a user entity.
      *
-     * @Route("/{id}", name="post-user_delete")
+     * @Route("/{id}", name="user_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, User $user)
@@ -110,13 +110,13 @@ class UserController extends Controller
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush($user);
         }
 
-        return $this->redirectToRoute('post-user_index');
+        return $this->redirectToRoute('user_index');
     }
 
     /**
@@ -129,7 +129,7 @@ class UserController extends Controller
     private function createDeleteForm(User $user)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('post-user_delete', array('id' => $user->getId())))
+            ->setAction($this->generateUrl('user_delete', array('id' => $user->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

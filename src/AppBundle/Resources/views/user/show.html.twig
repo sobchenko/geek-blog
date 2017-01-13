@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '@App/base.html.twig' %}
 
 {% block body %}
     <h1>User</h1>
@@ -10,11 +10,11 @@
                 <td>{{ user.id }}</td>
             </tr>
             <tr>
-                <th>Nick</th>
+                <th>Nick</th>s
                 <td>{{ user.nick }}</td>
             </tr>
             <tr>
-                <th>Createdat</th>
+                <th>CreatedAt</th>
                 <td>{% if user.createdAt %}{{ user.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
         </tbody>
@@ -22,10 +22,10 @@
 
     <ul>
         <li>
-            <a href="{{ path('post-user_index') }}">Back to the list</a>
+            <a href="{{ path('user_index') }}">Back to the list</a>
         </li>
         <li>
-            <a href="{{ path('post-user_edit', { 'id': user.id }) }}">Edit</a>
+            <a href="{{ path('user_edit', { 'id': user.id }) }}">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}
